@@ -9,7 +9,7 @@ The `Service Object` is based upon the command pattern and follows the [single r
 
 ## Usage
 
-> You can also use these with POPO (Plain Old PHP Objects), implementing an execute method with the arguments that you desire and return a Result object. This has the added benefit of type hinting params required.
+> You can also use create a Service Object with a POPO (Plain Old PHP Object) (not adding the interface), implementing an execute method with the arguments that you desire and return a `Result` object. This has the added benefit of type hinting params required.
 
 Create your service with the dependencies in `__constructor` method and create the method like `execute`, you should always use the same name, since commands are typically executed, no need here to use something else. The method must always return a `Result` object.
 
