@@ -1,6 +1,6 @@
 # Service Object
 
-`Service Objects` helps keep your models and controllers skinny, whilst keeping your code clean and testable. The `Service Object` also helps you
+`Service Objects` help keep your models and controllers skinny, whilst keeping your code clean and testable. The `Service Object` also helps you
 seperate your application business logic from the framework and makes it easy to test in isolation.
 
 With `Service Objects` have all dependencies added to the `__constructor` method and do not carry state, remember the `The Dependency Rule`, this means that code dependencies can only point inwards.
