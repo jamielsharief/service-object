@@ -13,16 +13,14 @@
 
 namespace Lightning\ServiceObject;
 
-/**
- * An interface for a Generic implemenation
- */
-interface ServiceObjectInterface
+interface ServiceObjectDispatcherInterface
 {
     /**
-     * Executes the service
+     * Dispatches the Service Object with the following arguments
      *
-     * @param Params $params
+     * @param array $arguments
+     * @throws BadMethodCall if method that needs to be invoked is not defined
      * @return Result
      */
-    public function execute(Params $params): Result;
+    public function dispatch(array $arguments = []): Result;
 }

@@ -1,7 +1,7 @@
 # Service Object
 
 `Service Objects` help keep your models and controllers skinny, whilst keeping your code clean and testable. The `Service Object` also helps you
-seperate your application business logic from the framework and makes it easy to test in isolation.
+seperate your application business logic from the framework and also makes it easy to test in isolation. They are also super DI-able.
 
 With `Service Objects` have all dependencies added to the `__constructor` method and do not carry state, remember the `The Dependency Rule`, this means that code dependencies can only point inwards.
 
@@ -36,7 +36,7 @@ class CreateUserService implements ServiceObjectInterface
     public function execute(Params $params) : Result
     {
        $user = [];
-       $result = $this->createInDb($params->tenant_id, $params->owner_id);
+       $result = $this->createInDb($params->get('tenant_id'), $params->get('owner_id'));
     
        if($result){
             $user = $this->fetchUser();

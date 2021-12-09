@@ -65,6 +65,7 @@ class Params
 
     /**
      * Magic method
+     * TODO: yea or nay?
      *
      * @param string $name
      * @return void
