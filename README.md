@@ -5,7 +5,7 @@ seperate your application business logic from the framework and also makes it ea
 
 With `Service Objects` have all dependencies added to the `__constructor` method and do not carry state, remember the `The Dependency Rule`, this means that code dependencies can only point inwards.
 
-The `Service Object` is based upon the command pattern and follows the [single responsibility principle](https://en.wikipedia.org/wiki/Single-responsibility_principle), with a single method  `execute` method where the logic goes and this method must return a `Result` object.
+The `Service Object` is based upon the command pattern and follows the [single responsibility principle](https://en.wikipedia.org/wiki/Single-responsibility_principle), with a single method  `execute` method where the logic goes and this method must return a `Result` object. 
 
 ## Usage
 
@@ -99,7 +99,9 @@ $string = (string) $result;
 
 ## Do nots
 
-- Do not call other Service Objects from within a Service Object, if you need to, then perhaps look at refactoring, such as moving the logic to a single class, which can be passed as a dependency instead.
+- Do not use an object that did not come from the constructor
+
+- Do not call other Service Objects from within a Service Object, if you need to, then perhaps look at refactoring, such as moving the logic to a single class, which can be passed as a dependency instead. Some people from large projects say this leads to complication and harder to find problems. If you must then make sure its a dependency in the constructor.
 
 - Do nots put all business logic in service objects, Service objects are more functional in nature and call and use your domain model objects which is where the business logic should be. See [anemic domain model](https://martinfowler.com/bliki/AnemicDomainModel.html) on putting all your business logic in services.
 
