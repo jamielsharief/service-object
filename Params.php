@@ -80,7 +80,7 @@ class Params
      *
      * @return array
      */
-    public function getState(): array
+    public function toArray(): array
     {
         return $this->data;
     }

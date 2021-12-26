@@ -69,7 +69,7 @@ $bool = $params->has('foo');
 $value = $params->get('foo');
 $value = $params->foo; 
 
-$array = $params->getState();
+$array = $params->toArray();
 ```
 
 ## Result Object
