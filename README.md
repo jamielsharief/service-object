@@ -16,6 +16,8 @@ This package provides:
 
 ## Usage
 
+Create your service object class
+
 ```php
 class CreateUserService implements ServiceObjectInterface
 {
