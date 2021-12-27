@@ -5,72 +5,55 @@ seperate your application business logic from the framework and also makes it ea
 
 With `Service Objects` have all dependencies added to the `__constructor` method and do not carry state, remember the `The Dependency Rule`, this means that code dependencies can only point inwards.
 
-The `Service Object` is based upon the command pattern and follows the [single responsibility principle](https://en.wikipedia.org/wiki/Single-responsibility_principle), with a single method  `execute` method where the logic goes and this method must return a `Result` object. 
+The `Service Object` is based upon the command pattern and follows the [single responsibility principle](https://en.wikipedia.org/wiki/Single-responsibility_principle), with a the method `execute` where the logic goes.
+
+
+This package provides:
+
+- `AbstractServiceObject`
+- The `Result` value object
+- `Params` an immutable object for passing context parameters to the `ServiceObject`
 
 ## Usage
-
-> You can also use create a Service Object with a POPO (Plain Old PHP Object) (not adding the interface), implementing an execute method with the arguments that you desire and return a `Result` object. This has the added benefit of type hinting params required.
-
-Create your service with the dependencies in `__constructor` method and create the method like `execute`, you should always use the same name, since commands are typically executed, no need here to use something else. The method must always return a `Result` object.
 
 ```php
 class CreateUserService implements ServiceObjectInterface
 {
+    private Result $result;
     private Model $user; 
     private LoggerInterface $logger
 
-    public function __construct(Model $user, LoggerInterface $logger) 
+    public function __construct(Result $result, Model $user, LoggerInterface $logger) 
     {
         $this->user = $user;
         $this->logger = $logger;
     } 
 
-    /**
-     * Executes this service
-     *
-     * @param Params $params The following params are needed:
-     *  - tenant_id: tenant id
-     *  - owner_id: the ID of the user creating this
-     * @return Result
-     */
-    public function execute(Params $params) : Result
+    public function execute() : Result
     {
-       $user = [];
-       $result = $this->createInDb($params->get('tenant_id'), $params->get('owner_id'));
-    
-       if($result){
-            $user = $this->fetchUser();
-            $this->notifyViaSMS($user);
-            $this->somethingForTheWeekend($user);
-       }
+ 
+        $user = $this->user->create($this->params->get('post'));
 
-       return new Result($result, $user);
+        if(!$user){
+            return $this->result->withSuccess(false);
+        }
+
+        // do stuff here
+        $this->logNewUser($user);
+
+        return $this->result->withData(
+            'user' => $user
+        ]);
     }
 }
+
+$service = new CreateUserService(new Result(),$model,$logger);
+$params = new Params(['name'=>'fred', 'email'=>'fred@example.com']); //  See below
+$service->withParams($params)->execute();
 ```
 
-To execute
 
-```php
-$params = new Params(['foo' => 'bar']);
-$result = (new CreateUserService($userModel, $logger))->execute($params);
-```
 
-## Params Object
-
-The params object is an immutable object, trying to get a value that was provided from the `Params` object will result in an `UnknownParameterException`. For optional params always call the `has` method first.
-
-```php
-$params = new Params(['foo'=>'bar']);
-
-$bool = $params->has('foo');
-
-// To get a param
-$value = $params->get('foo');
-$value = $params->foo; 
-
-$array = $params->toArray();
-```
 
 ## Result Object
 

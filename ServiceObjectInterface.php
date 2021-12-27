@@ -13,16 +13,28 @@
 
 namespace Lightning\ServiceObject;
 
-/**
- * An interface for a Generic implemenation
- */
 interface ServiceObjectInterface
 {
     /**
-     * Executes the service
+     * Sets the params on this instance
      *
      * @param Params $params
-     * @return Result
+     * @return self
      */
-    public function execute(Params $params): Result;
+    public function setParams(Params $params): self;
+
+    /**
+     * Returns an instance with the params set
+     *
+     * @param Params $params
+     * @return self
+     */
+    public function withParams(Params $params): self;
+
+    /**
+     * Executes the Service Object
+     *
+     * @return mixed;
+     */
+    public function execute();
 }

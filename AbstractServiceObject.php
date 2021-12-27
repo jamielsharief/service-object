@@ -13,22 +13,59 @@
 
 namespace Lightning\ServiceObject;
 
-use BadMethodCallException;
-
-abstract class AbstractServiceObject implements ServiceObjectDispatcherInterface
+/**
+ * Service Object
+ *
+ * Command Pattern: "an object is used to encapsulate all information needed to perform an action or trigger an event"
+ *
+ */
+abstract class AbstractServiceObject implements ServiceObjectInterface
 {
     /**
-     * Dispatches this Service Object with an array of arguments
+     * Params
      *
-     * @param array $arguments
-     * @return Result
+     * @var Params|null
      */
-    public function dispatch(array $arguments = []): Result
-    {
-        if (! method_exists($this, 'execute')) {
-            throw new BadMethodCallException(sprintf('Service Object `%s` does not have execute method', get_class($this)));
-        }
+    protected ?Params $params = null;
 
-        return call_user_func_array([$this, 'execute'], $arguments);
+    /**
+     * Sets the params on this instance
+     *
+     * @param Params $params
+     * @return self
+     */
+    public function setParams(Params $params): self
+    {
+        $this->params = $params;
+
+        return $this;
+    }
+
+    /**
+     * Returns an instance with the params set
+     *
+     * @param Params $params
+     * @return self
+     */
+    public function withParams(Params $params): self
+    {
+        return (clone $this)->setParams($params);
+    }
+
+    /**
+     * Executes the Service Object
+     *
+     * @return mixed
+     */
+    abstract public function execute();
+
+    /**
+     * Make this a callable
+     *
+     * @return mixed
+     */
+    public function __invoke()
+    {
+        return $this->execute();
     }
 }

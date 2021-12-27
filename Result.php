@@ -27,7 +27,7 @@ class Result implements JsonSerializable, Stringable
      * @param boolean $success
      * @param array $data
      */
-    public function __construct(bool $success, array $data = [])
+    public function __construct(bool $success = true, array $data = [])
     {
         $this->success = $success;
         $this->data = $data;
@@ -64,6 +64,17 @@ class Result implements JsonSerializable, Stringable
         $this->success = $success;
 
         return $this;
+    }
+
+    /**
+     * Returns a new Result object with sucess set to this
+     *
+     * @param boolean $success
+     * @return self
+     */
+    public function withSuccess(bool $success): self
+    {
+        return (clone $this)->setSuccess($success);
     }
 
     /**
@@ -114,6 +125,17 @@ class Result implements JsonSerializable, Stringable
         $this->data = $data;
 
         return $this;
+    }
+
+    /**
+     * Returns a new instance with this data
+     *
+     * @param array $data
+     * @return self
+     */
+    public function withData(array $data): self
+    {
+        return (clone $this)->setData($data);
     }
 
     /**
