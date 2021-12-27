@@ -34,7 +34,7 @@ interface ServiceObjectInterface
     /**
      * Executes the Service Object
      *
-     * @return mixed;
+     * @return Result
      */
-    public function execute();
+    public function execute(): Result;
 }

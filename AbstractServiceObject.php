@@ -55,16 +55,16 @@ abstract class AbstractServiceObject implements ServiceObjectInterface
     /**
      * Executes the Service Object
      *
-     * @return mixed
+     * @return Result
      */
-    abstract public function execute();
+    abstract public function execute(): Result;
 
     /**
      * Make this a callable
      *
-     * @return mixed
+     * @return Result
      */
-    public function __invoke()
+    public function __invoke(): Result
     {
         return $this->execute();
     }

@@ -5,12 +5,12 @@ seperate your application business logic from the framework and also makes it ea
 
 With `Service Objects` have all dependencies added to the `__constructor` method and do not carry state, remember the `The Dependency Rule`, this means that code dependencies can only point inwards.
 
-The `Service Object` is based upon the command pattern and follows the [single responsibility principle](https://en.wikipedia.org/wiki/Single-responsibility_principle), with a the method `execute` where the logic goes.
+The `Service Object` is based upon the command pattern and follows the [single responsibility principle](https://en.wikipedia.org/wiki/Single-responsibility_principle), with a the method `execute` where the logic goes and it must always return a `Result` object.
 
 
 This package provides:
 
-- `AbstractServiceObject`
+- `AbstractServiceObject` which also is a `callable`, so it can be executed now or later.
 - The `Result` value object
 - `Params` an immutable object for passing context parameters to the `ServiceObject`
 
