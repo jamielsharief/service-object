@@ -32,7 +32,7 @@ class CreateUserService implements ServiceObjectInterface
     public function execute() : Result
     {
  
-        $user = $this->user->create($this->params->get('post'));
+        $user = $this->user->create($this->params->toArray());
 
         if(!$user){
             return $this->result->withSuccess(false);
@@ -46,7 +46,10 @@ class CreateUserService implements ServiceObjectInterface
         ]);
     }
 }
+```
+The create the object and run it.
 
+```php
 $service = new CreateUserService(new Result(),$model,$logger);
 $params = new Params(['name'=>'fred', 'email'=>'fred@example.com']); //  See below
 $service->withParams($params)->execute();
