@@ -32,9 +32,9 @@ interface ServiceObjectInterface
     public function withParams(Params $params): self;
 
     /**
-     * Executes the Service Object
+     * Dispatches the Service
      *
      * @return Result
      */
-    public function execute(): Result;
+    public function dispatch(): Result;
 }

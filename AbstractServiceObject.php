@@ -53,11 +53,23 @@ abstract class AbstractServiceObject implements ServiceObjectInterface
     }
 
     /**
-     * Executes the Service Object
+     * Place the service code here
+     *
+     * @param Params $params
+     * @param Result $result
+     * @return Result
+     */
+    abstract public function execute(Params $params, Result $result): Result;
+
+    /**
+     * Dispatches the Service with the params, and Result object
      *
      * @return Result
      */
-    abstract public function execute(): Result;
+    public function dispatch(): Result
+    {
+        return $this->execute($this->params ?? new Params(), new Result());
+    }
 
     /**
      * Make this a callable
@@ -66,6 +78,6 @@ abstract class AbstractServiceObject implements ServiceObjectInterface
      */
     public function __invoke(): Result
     {
-        return $this->execute();
+        return $this->dispatch();
     }
 }

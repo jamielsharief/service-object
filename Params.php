@@ -13,8 +13,6 @@
 
 namespace Lightning\ServiceObject;
 
-use Lightning\ServiceObject\Exception\UnknownParameterException;
-
 class Params
 {
     /**
@@ -46,36 +44,6 @@ class Params
     }
 
     /**
-     * Gets a parameter
-     *
-     * @param string $name
-     * @throws UnknownParameterException if this does not exist
-     * @return mixed
-     */
-    public function &get(string $name)
-    {
-        if (! $this->has($name)) {
-            throw new UnknownParameterException(sprintf('Unkown parameter `%s`', $name));
-        }
-
-        $value = $this->data[$name];
-
-        return $value;
-    }
-
-    /**
-     * Magic method
-     * TODO: yea or nay?
-     *
-     * @param string $name
-     * @return void
-     */
-    public function &__get($name)
-    {
-        return $this->get($name);
-    }
-
-    /**
      * Gets the state
      *
      * @return array
@@ -83,5 +51,42 @@ class Params
     public function toArray(): array
     {
         return $this->data;
+    }
+
+    /**
+     * Gets a param
+     *
+     * @return array
+     */
+    public function get(string $name, $default = null)
+    {
+        return $this->data[$name] ?? $default;
+    }
+
+    /**
+     * Set a value of a param
+     *
+     * @param array $data
+     *
+     * @return self
+     */
+    public function set(string $name, $value): self
+    {
+        $this->data[$name] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Unset a param
+     *
+     * @param string $name
+     * @return self
+     */
+    public function unset(string $name): self
+    {
+        unset($this->data[$name]);
+
+        return $this;
     }
 }
