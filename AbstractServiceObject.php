@@ -27,7 +27,7 @@ abstract class AbstractServiceObject
      * Returns a new instance with the args set to be called when dispatched
      *
      * @param array $args
-     * @return self
+     * @return static
      */
     public function withArguments(array $args): self
     {
@@ -41,11 +41,11 @@ abstract class AbstractServiceObject
      * Returns a new instance with the args set as Params and an empty result
      *
      * @param Params $params
-     * @return self
+     * @return static
      */
     public function withParams(Params $params): self
     {
-        return $this->withArguments([$params,new Result()]);
+        return $this->withArguments([$params,$this->createResult()]);
     }
 
     /**
@@ -66,5 +66,19 @@ abstract class AbstractServiceObject
     public function __invoke(): Result
     {
         return $this->run();
+    }
+
+    /**
+     * Factory method
+     *
+     * @internal in this case it should be available to user, so protected is used rather than private
+     *
+     * @param boolean $success
+     * @param array $data
+     * @return Result
+     */
+    protected function createResult(bool $success = true, array $data = []): Result
+    {
+        return new Result($success, $data);
     }
 }

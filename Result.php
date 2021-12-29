@@ -70,7 +70,7 @@ class Result implements JsonSerializable, Stringable
      * Returns a new Result object with sucess set to this
      *
      * @param boolean $success
-     * @return self
+     * @return static
      */
     public function withSuccess(bool $success): self
     {
@@ -131,7 +131,7 @@ class Result implements JsonSerializable, Stringable
      * Returns a new instance with this data
      *
      * @param array $data
-     * @return self
+     * @return static
      */
     public function withData(array $data): self
     {

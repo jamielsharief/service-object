@@ -56,7 +56,7 @@ class Params
     /**
      * Gets a param
      *
-     * @return array
+     * @return mixed
      */
     public function get(string $name, $default = null)
     {
