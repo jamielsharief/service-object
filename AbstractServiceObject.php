@@ -19,56 +19,43 @@ namespace Lightning\ServiceObject;
  * Command Pattern: "an object is used to encapsulate all information needed to perform an action or trigger an event"
  *
  */
-abstract class AbstractServiceObject implements ServiceObjectInterface
+abstract class AbstractServiceObject
 {
-    /**
-     * Params
-     *
-     * @var Params|null
-     */
-    protected ?Params $params = null;
+    private array $args = [];
 
     /**
-     * Sets the params on this instance
+     * Returns a new instance with the args set to be called when dispatched
      *
-     * @param Params $params
+     * @param array $args
      * @return self
      */
-    public function setParams(Params $params): self
+    public function withArguments(array $args): self
     {
-        $this->params = $params;
+        $service = clone $this;
+        $service->args = $args;
 
-        return $this;
+        return $service;
     }
 
     /**
-     * Returns an instance with the params set
+     * Returns a new instance with the args set as Params and an empty result
      *
      * @param Params $params
      * @return self
      */
     public function withParams(Params $params): self
     {
-        return (clone $this)->setParams($params);
+        return $this->withArguments([$params,new Result()]);
     }
 
     /**
-     * Place the service code here
-     *
-     * @param Params $params
-     * @param Result $result
-     * @return Result
-     */
-    abstract public function execute(Params $params, Result $result): Result;
-
-    /**
-     * Dispatches the Service with the params, and Result object
+     * Runs the Service by executing the service object with the arguments that were set withArguments or withParams
      *
      * @return Result
      */
-    public function dispatch(): Result
+    public function run(): Result
     {
-        return $this->execute($this->params ?? new Params(), new Result());
+        return call_user_func_array([$this,'execute'], $this->args);
     }
 
     /**
@@ -78,6 +65,6 @@ abstract class AbstractServiceObject implements ServiceObjectInterface
      */
     public function __invoke(): Result
     {
-        return $this->dispatch();
+        return $this->run();
     }
 }
