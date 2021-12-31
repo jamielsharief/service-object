@@ -18,44 +18,56 @@ namespace Lightning\ServiceObject;
  *
  * Command Pattern: "an object is used to encapsulate all information needed to perform an action or trigger an event"
  *
+ * Idea for type hiting, create an extra method
+ *
+ * public function with(string $name, string $url): self
+ * {
+ *     $params = new Params(['name' => $name,'url' => $url]);
+ *
+ *     return $this->withParams($params);
+ *  }
+ *
+ *
  */
-abstract class AbstractServiceObject
+abstract class AbstractServiceObject implements ServiceObjectInterface
 {
-    private array $args = [];
+    private ?Params $params = null;
 
     /**
-     * Returns a new instance with the args set to be called when dispatched
+     * A hook that is called before execute when the Service Object is run.
      *
-     * @param array $args
-     * @return static
+     * @return void
      */
-    public function withArguments(array $args): self
+    protected function initialize(): void
     {
-        $service = clone $this;
-        $service->args = $args;
-
-        return $service;
     }
-
     /**
-     * Returns a new instance with the args set as Params and an empty result
+     * Returns a new instance with the Params object set
      *
      * @param Params $params
      * @return static
      */
     public function withParams(Params $params): self
     {
-        return $this->withArguments([$params,$this->createResult()]);
+        $service = clone $this;
+        $service->params = $params;
+
+        return $service;
     }
 
     /**
-     * Runs the Service by executing the service object with the arguments that were set withArguments or withParams
+     * Runs the Service Object
      *
      * @return Result
      */
     public function run(): Result
     {
-        return call_user_func_array([$this,'execute'], $this->args);
+        $this->initialize();
+
+        $params = $this->params ?? new Params();
+        $result = new Result();
+
+        return call_user_func_array([$this,'execute'], [$params,$result]);
     }
 
     /**
@@ -66,19 +78,5 @@ abstract class AbstractServiceObject
     public function __invoke(): Result
     {
         return $this->run();
-    }
-
-    /**
-     * Factory method
-     *
-     * @internal in this case it should be available to user, so protected is used rather than private
-     *
-     * @param boolean $success
-     * @param array $data
-     * @return Result
-     */
-    protected function createResult(bool $success = true, array $data = []): Result
-    {
-        return new Result($success, $data);
     }
 }

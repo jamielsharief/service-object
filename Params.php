@@ -13,13 +13,15 @@
 
 namespace Lightning\ServiceObject;
 
+use Lightning\ServiceObject\Exception\UnknownParameterException;
+
 class Params
 {
     /**
-    * Container data
-    *
-    * @var array
-    */
+     * Container data
+     *
+     * @var array
+     */
     protected array $data = [];
 
     /**
@@ -56,11 +58,17 @@ class Params
     /**
      * Gets a param
      *
+     * @param string $name
+     * @throws UnkownParameterException
      * @return mixed
      */
-    public function get(string $name, $default = null)
+    public function get(string $name)
     {
-        return $this->data[$name] ?? $default;
+        if (! isset($this->data[$name])) {
+            throw new UnknownParameterException(sprintf('Unkown parameter `%s`', $name));
+        }
+
+        return $this->data[$name];
     }
 
     /**
